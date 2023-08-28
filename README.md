@@ -15,6 +15,10 @@ from ltr_datasets.transformations import (
     StratifiedTruncate,
 )
 
+# Download the Microsoft Learning to Rank Datasets and perform the following transformations:
+# 1. Normalize document features.
+# 2. Sample 10 documents per query while keeping a similar distribution of relevance labels.
+# 3. Queries with less than 10 documents are padded.
 loader = MSLR10K(
     fold=1,
     split="train",
@@ -25,7 +29,7 @@ loader = MSLR10K(
 )
 
 # Load PyTorch dataset, which is cached by default after the first load.
-# To overwrite the cached dataset, e.g., after changing transformations, use .load(force_reload=True)
+# To overwrite the cached dataset, e.g. after changing transformations, use .load(force_reload=True).
 dataset = loader.load()
 
 # Each entry is a search query with id, document features, relevance ratings, and number of documents.
