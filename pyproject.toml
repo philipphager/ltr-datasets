@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ltr-datasets"
-version = "0.1ı.0"
+version = "0.1.0"
 description = ""
 authors = ["Philipp Hager <philipp.konstantin.hager@gmail.com>"]
 readme = "README.md"
