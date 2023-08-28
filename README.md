@@ -24,8 +24,10 @@ loader = MSLR10K(
     ],
 )
 
+# Load PyTorch dataset, which is cached by default after the first load.
+# To overwrite the cached dataset, e.g., after changing transformations, use .load(force_reload=True)
 dataset = loader.load()
 
-# Load query, document features, relevance ratings, and number of documents
+# Each entry is a search query with id, document features, relevance ratings, and number of documents.
 query_id, x, y, n = dataset[0]
 ```
