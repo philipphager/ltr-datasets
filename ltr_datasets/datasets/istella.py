@@ -17,7 +17,7 @@ class Istella(DatasetLoader):
     n_features: int = 220
     split2file: Dict[str, str] = {
         "train": "train.txt",
-        "val": "valid.txt",
+        "val": "vali.txt",
         "test": "test.txt",
     }
 
