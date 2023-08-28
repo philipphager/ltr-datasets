@@ -18,12 +18,11 @@ class Yahoo(DatasetLoader):
     def __init__(
         self,
         fold: int,
-        split: str,
         transform: Optional[List[Transformation]] = None,
     ):
-        super().__init__(self.name, fold, split, transform)
+        super().__init__(self.name, fold, transform)
 
-    def _parse(self) -> pd.DataFrame:
+    def _parse(self, split: str) -> pd.DataFrame:
         zip_path = self.download_directory / self.zip_file
 
         if not zip_path.exists():
@@ -43,7 +42,7 @@ class Yahoo(DatasetLoader):
         verify_file(zip_path, self.checksum)
         dataset_path = unarchive(zip_path, self.dataset_directory / self.file)
 
-        split = "valid" if self.split == "val" else self.split
+        split = "valid" if split == "val" else split
         path = dataset_path / f"set{self.fold}.{split}.txt"
 
         return read_svmlight_file(path)

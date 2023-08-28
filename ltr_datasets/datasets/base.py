@@ -1,3 +1,4 @@
+import logging
 from abc import abstractmethod
 from os import getenv
 from pathlib import Path
@@ -61,17 +62,14 @@ class DatasetLoader:
         self,
         name: str,
         fold: int,
-        split: str,
         transform: Optional[List[Transformation]] = None,
     ):
         self.name = name
         self.fold = fold
-        self.split = split
         self.base_dir = self.base_directory
         self.transform = transform if transform is not None else []
 
         assert fold in self.folds, f"Fold must be one of {self.folds}"
-        assert split in self.splits, f"Split must be one of {self.splits}"
 
     @property
     def base_directory(self):
@@ -98,11 +96,13 @@ class DatasetLoader:
         path.mkdir(parents=True, exist_ok=True)
         return path
 
-    def load(self, force_reload: bool = False) -> RatingDataset:
-        path = self.cache_directory / f"{self.name}-fold_{self.fold}-{self.split}.pkl"
+    def load(self, split: str, force_reload: bool = False) -> RatingDataset:
+        assert split in self.splits, f"Split must be one of {self.splits}"
+        path = self.cache_directory / f"{self.name}-fold_{self.fold}-{split}.pkl"
 
         if not path.exists() or force_reload:
-            df = self._parse()
+            logging.info(f"Parsing {self.name}-fold_{self.fold}-{split} dataset")
+            df = self._parse(split)
 
             for t in self.transform:
                 df = t(df)
@@ -123,5 +123,5 @@ class DatasetLoader:
         pass
 
     @abstractmethod
-    def _parse(self) -> pd.DataFrame:
+    def _parse(self, split: str) -> pd.DataFrame:
         pass

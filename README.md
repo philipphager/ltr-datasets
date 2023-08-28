@@ -21,7 +21,6 @@ from ltr_datasets.transformations import (
 # 3. Queries with less than 10 documents are padded.
 loader = MSLR10K(
     fold=1,
-    split="train",
     transform=[
         Log1pNormalize(),
         StratifiedTruncate(max_length=10, random_state=42),
@@ -30,7 +29,7 @@ loader = MSLR10K(
 
 # Load PyTorch dataset, which is cached by default after the first load.
 # To overwrite the cached dataset, e.g. after changing transformations, use .load(force_reload=True).
-dataset = loader.load()
+dataset = loader.load(split="train")
 
 # Each entry is a search query with id, document features, relevance ratings, and number of documents.
 query_id, x, y, n = dataset[0]

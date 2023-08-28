@@ -25,16 +25,15 @@ class MSLR10K(DatasetLoader):
     def __init__(
         self,
         fold: int,
-        split: str,
         transform: Optional[List[Transformation]] = None,
     ):
-        super().__init__(self.name, fold, split, transform)
+        super().__init__(self.name, fold, transform)
 
-    def _parse(self) -> pd.DataFrame:
+    def _parse(self, split: str) -> pd.DataFrame:
         zip_path = download(self.url, self.download_directory / self.zip_file)
         verify_file(zip_path, self.checksum)
         dataset_path = unarchive(zip_path, self.dataset_directory / self.folder)
-        path = dataset_path / f"Fold{self.fold}" / self.split2file[self.split]
+        path = dataset_path / f"Fold{self.fold}" / self.split2file[split]
 
         return read_svmlight_file(path)
 
@@ -63,16 +62,15 @@ class MSLR30K(DatasetLoader):
     def __init__(
         self,
         fold: int,
-        split: str,
         transform: Optional[List[Transformation]] = None,
     ):
-        super().__init__(self.name, fold, split, transform)
+        super().__init__(self.name, fold, transform)
 
-    def _parse(self) -> pd.DataFrame:
+    def _parse(self, split: str) -> pd.DataFrame:
         zip_path = download(self.url, self.download_directory / self.zip_file)
         verify_file(zip_path, self.checksum)
         dataset_path = unarchive(zip_path, self.dataset_directory / self.folder)
-        path = dataset_path / f"Fold{self.fold}" / self.split2file[self.split]
+        path = dataset_path / f"Fold{self.fold}" / self.split2file[split]
 
         return read_svmlight_file(path)
 
